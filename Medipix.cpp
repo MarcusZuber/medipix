@@ -113,15 +113,10 @@ void Medipix::homogeneous_exposure(float energy, unsigned int number_of_photons)
     std::default_random_engine generator;
     std::uniform_real_distribution<float> distribution_x(get_min_x(),get_max_x());
     std::uniform_real_distribution<float> distribution_y(get_min_y(),get_max_y());
-    std::vector<std::future<void>> futures;
     for (unsigned int i = 0; i < number_of_photons; ++i){
         float x = distribution_x(generator);
         float y = distribution_x(generator);
-        futures.push_back(std::async(&Medipix::add_photon, this, energy, x, y, 3));
-    }
-
-    for (auto &future : futures) {
-        future.wait();
+        add_photon(energy, x, y, 3);
     }
 
 }
