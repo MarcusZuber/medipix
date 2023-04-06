@@ -191,7 +191,7 @@ void Medipix::build_i_krum_response() {
 
 std::vector<float> Medipix::calculate_pixel_signal(unsigned int i, unsigned int j) {
     auto pixel_events = events[i * n_pixel_y + j];
-    std::vector<float> pixel_signal(int(max_time* float(samples_per_us)));
+    std::vector<float> pixel_signal(int(max_time* float(samples_per_us)) + response_function.size(), 0.f);
 
     for (auto event: pixel_events) {
         unsigned int start_index = int(event.time * float(samples_per_us));
@@ -227,4 +227,8 @@ void Medipix::save_pixel_signals(const std::string &filename, unsigned int i, un
 
 bool Medipix::get_timed() const {
     return timed;
+}
+
+unsigned int Medipix::get_pixel_value(unsigned int i, unsigned int j) const {
+    return image[i * n_pixel_y + j];
 }
