@@ -18,7 +18,7 @@ Medipix::Medipix() {
     }
 }
 
-void Medipix::reset_image() {
+[[maybe_unused]] void Medipix::reset_image() {
     image.reset(new unsigned int[n_pixel_x * n_pixel_y]);
     for (unsigned int i = 0; i < n_pixel_y*n_pixel_x; ++i){
         image[i] = 0;
@@ -41,15 +41,15 @@ float Medipix::get_max_y() const {
     return pixel_pitch * float(n_pixel_y) / 2.f;
 }
 
-float Medipix::get_th0() const {
+[[maybe_unused]] float Medipix::get_th0() const {
     return th0;
 }
 
-float Medipix::get_pixel_pitch() const {
+[[maybe_unused]] float Medipix::get_pixel_pitch() const {
     return pixel_pitch;
 }
 
-float Medipix::get_psf_sigma() const {
+[[maybe_unused]] float Medipix::get_psf_sigma() const {
     return psf_sigma;
 }
 
@@ -137,4 +137,12 @@ void Medipix::save_image(std::string filename) const {
     }
     image_file.close();
 
+}
+
+void Medipix::set_psf_sigma(float s) {
+    psf_sigma = s;
+}
+
+void Medipix::set_th0(float s) {
+    th0 = s;
 }
