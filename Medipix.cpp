@@ -8,7 +8,6 @@
 #include <list>
 #include <random>
 #include <fstream>
-#include <future>
 
 
 Medipix::Medipix() {
@@ -122,6 +121,8 @@ void Medipix::homogeneous_exposure(float energy, unsigned int number_of_photons)
 }
 
 unsigned int Medipix::get_total_counts() {
+    std::lock_guard<std::mutex> lk(image_write_mutex);
+
     unsigned int counts = 0;
     for (unsigned int i=0; i < n_pixel_y*n_pixel_y; ++i){
         counts += image[i];
@@ -129,8 +130,9 @@ unsigned int Medipix::get_total_counts() {
     return counts;
 }
 
-void Medipix::save_image(std::string filename) const {
+void Medipix::save_image(const std::string& filename) {
     std::ofstream image_file(filename, std::ios::out | std::ios::binary);
+    std::lock_guard<std::mutex> lk(image_write_mutex);
     for (unsigned int i=0; i < n_pixel_y*n_pixel_y; ++i){
         uint32_t pixel_value = image[i];
         image_file.write((char *) &pixel_value, sizeof(pixel_value));

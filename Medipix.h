@@ -7,8 +7,6 @@
 
 #include <utility>
 #include <memory>
-// all lentghs in um
-// all energies in keV
 
 class Medipix {
 public:
@@ -71,7 +69,7 @@ public:
      * Setter for sigma of gaussian shaped psf
      * @param s sigma in um
      */
-    [[maybe_unused]] void set_psf_sigma(float s);
+    [[maybe_unused]] [[maybe_unused]] void set_psf_sigma(float s);
 
     /**
      * Setter for threshold zero
@@ -99,7 +97,7 @@ public:
      * Saves the current image to a raw file
      * @param filename
      */
-    void save_image(std::string filename) const;
+    void save_image(const std::string& filename);
 
     /**
      * Simulates a homogeneous exposure of *number_of_photons* with the energy *energy*
