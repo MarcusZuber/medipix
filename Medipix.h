@@ -117,17 +117,17 @@ private:
      *
      *
      *   \f[
-     *   \frac{E}{2\pi\sigma} \int\limits_{\text{pixel_center_x}-\text{pixel_pitch}/2}^{\text{pixel_center_x}-\text{pixel_pitch}/2}
+     *   \frac{E}{2\pi\sigma} \int\limits_{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2}^{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2}
      *   \exp(\frac{x-x_0}{2\sigma^2}) dx
-     *   \int\limits_{\text{pixel_center_y}-\text{pixel_pitch}/2}^{\text{pixel_center_y}-\text{pixel_pitch}/2}
+     *   \int\limits_{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2}^{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2}
      *   \exp(\frac{y-y_0}{2\sigma^2}) dy
      *   \f]
      *
      *   \f[
-     *      \frac{E}{4} ((erf(\frac{\text{pixel_center_x}-\text{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma}))
-     *      -(erf(\frac{\text{pixel_center_x}+\text{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma})))
-     *      ((erf(\frac{\text{pixel_center_y}-\text{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma}))
-     *      -(erf(\frac{\text{pixel_center_y}+\text{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma})))
+     *      \frac{E}{4} ((erf(\frac{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma}))
+     *      -(erf(\frac{\mbox{pixel_center_x}+\mbox{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma})))
+     *      ((erf(\frac{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma}))
+     *      -(erf(\frac{\mbox{pixel_center_y}+\mbox{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma})))
      *   \f]
      *
      * @param x position of the photon interaction in um
