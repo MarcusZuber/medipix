@@ -7,15 +7,36 @@
 
 #include <utility>
 #include <memory>
+#include <list>
+#include <vector>
+
+
+struct Event {
+    /**
+     * Time in us.
+     */
+    float time;
+
+    /**
+     * Energy in keV.
+     */
+    float energy;
+};
 
 class Medipix {
 public:
-    Medipix();
+    explicit Medipix(bool timed = false, unsigned int nx=256, unsigned int ny=256);
 
     /**
      * Resets the current image
      */
-    [[maybe_unused]] void reset_image();
+    [[maybe_unused]] void start_frame();
+
+    /**
+     * Finishes the current frame.
+     * In case of timed mode, the actual events are processed.
+     */
+    virtual void finish_frame();
 
     /**
      * Simulates the interaction of a single photon.
@@ -24,8 +45,9 @@ public:
      * @param position_x x-component of the position of the interacting photon in um
      * @param position_y y-component of the position of the interacting photon in um
      * @param radius Radius in pixel, in which shared charge could be deposited
+     * @param time interaction Time in us
      */
-    void add_photon(float energy, float position_x, float position_y, int radius);
+    virtual void add_photon(float energy, float position_x, float position_y, int radius, float time);
 
     /**
      * Getter for x dimension of the sensor
@@ -100,18 +122,19 @@ public:
     void save_image(const std::string& filename);
 
     /**
-     * Simulates a homogeneous exposure of *number_of_photons* with the energy *energy*
-     * @param energy Energy of the photons in keV
-     * @param number_of_photons
-     */
-    void homogeneous_exposure(float energy, unsigned int number_of_photons);
-
-    /**
      * Returns the total number of counts in the current image
      * @return
      */
     unsigned int get_total_counts();
-private:
+
+    /**
+     * Sets a normal distributed threshold dispersion
+     *
+     * @param sigma in keV
+     */
+    void random_threshold_dispersion(float sigma);
+
+protected:
     /**
      * Calculates the amount of energy in a single pixel
      *
@@ -139,15 +162,98 @@ private:
      */
     [[nodiscard]] float calculate_shared_energy( float x, float y, float energy, float pixel_center_x, float pixel_center_y) const;
 
+    /**
+     * Getter for pixel wise threshold (including threshold dispersion)
+     * @param i pixel
+     * @param j pixel
+     * @return threshold in keV
+     */
+    float get_th0(unsigned int i, unsigned int j);
 
+    /**
+     * Threshold zero in keV
+     */
     float th0 = 6.0;
+
+    /**
+     * pixel pitch in um
+     */
     float pixel_pitch = 55.0;
+
+    /**
+     * sigma of gaussian shaped psf in um
+     */
     float psf_sigma = 15.0;
-    unsigned int n_pixel_x = 256;
-    unsigned int n_pixel_y = 256;
-    std::shared_ptr<unsigned int[]> image;
+
+    /**
+     * x dimension of the sensor in pixel
+     */
+    unsigned int n_pixel_x;
+
+    /**
+     * y dimension of the sensor in pixel
+     */
+    unsigned int n_pixel_y;
+
+    /**
+     * Last timepoint of an interaction in the current exposure in us
+     */
+    float max_time = 0.f;
+
+    /**
+     * Current image
+     */
+    std::vector<unsigned int> image;
+
+    /**
+     * Threshold dispersion map
+     */
+    std::vector<float> th0_dispersion;
+
+    /**
+     * Increase the counter of the pixel (i, j) by one
+     * @param x
+     * @param y
+     */
     void increase_counter(unsigned int x, unsigned int y);
+
+    /**
+     * Mutex for image write access
+     */
     std::mutex image_write_mutex;
+
+    /**
+     * Specifies if the current exposure is timed. Times means that pulse-pileup is handled.
+     */
+    bool timed = false;
+
+    /**
+     * Map of lists storing the pixel-wise events
+     */
+    std::vector<std::list<Event>> events;
+
+    /**
+     * Response function of the preamplifier
+     */
+    std::vector<float> response_function;
+
+    /**
+     * Calculates the response function of the preamplifier
+     */
+    void build_i_krum_response();
+
+    /**
+     * Samples per microsecond for the preamplifier response and pileup simulation
+     */
+    unsigned int samples_per_us = 100;
+
+    /**
+     * Calculates the signal of a pixel (events convolved with the preamp response).
+     * @param i pixel
+     * @param j pixel
+     * @return vector of floats with the signal
+     */
+    std::vector<float> calculate_pixel_signal(unsigned int i, unsigned int j);
 };
 
 
