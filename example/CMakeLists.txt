@@ -8,6 +8,9 @@ target_link_libraries(threshold_scan medipix)
 add_executable(frequency_exposure frequency_pattern.cpp)
 target_link_libraries(frequency_exposure medipix)
 
+add_executable(pileup_scan pileup_scan.cpp)
+target_link_libraries(pileup_scan medipix)
+
 if (GNUPLOT_FOUND)
     set(GNUPLOT_INPUT_FILE_SPM \"input_file_spm='${CMAKE_CURRENT_BINARY_DIR}/threshold_scan_spm.txt'\")
     set(GNUPLOT_INPUT_FILE_CSM \"input_file_csm='${CMAKE_CURRENT_BINARY_DIR}/threshold_scan_csm.txt'\")

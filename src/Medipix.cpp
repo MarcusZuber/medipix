@@ -200,3 +200,11 @@ std::vector<float> Medipix::calculate_pixel_signal(unsigned int i, unsigned int 
     }
     return pixel_signal;
 }
+
+unsigned int Medipix::get_num_pixels_x() const {
+    return n_pixel_x;
+}
+
+unsigned int Medipix::get_num_pixels_y() const {
+    return n_pixel_y;
+}
