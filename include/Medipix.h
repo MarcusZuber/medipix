@@ -146,13 +146,15 @@ public:
      *
      * @param sigma in keV
      */
-    void random_threshold_dispersion(float sigma);
+    virtual void random_threshold_dispersion(float sigma);
 
 
     [[nodiscard]] unsigned int get_num_pixels_x() const;
     [[nodiscard]] unsigned int get_num_pixels_y() const;
     [[nodiscard]] unsigned int get_real_photons() const;
     void save_pixel_signals(const std::string& filename, unsigned int i, unsigned int j);
+    bool get_timed() const;
+
 protected:
     /**
      * Calculates the amount of energy in a single pixel

@@ -29,6 +29,14 @@ public:
     MedipixCSM();
     void add_photon(float energy, float position_x, float position_y, int radius, float time) override;
     void finish_frame() override;
+    void random_threshold_dispersion(float sigma) override;
+    float get_th1();
+    void set_th1(float t);
+protected:
+    float get_th1(unsigned int i, unsigned int j);
+    float th1 = 6.0;
+    std::vector<float> th1_dispersion;
+
 };
 
 #endif //MEDIPIX_MEDIPIX_CSM_H

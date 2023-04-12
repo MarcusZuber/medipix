@@ -23,10 +23,13 @@
 #include <iostream>
 
 
-void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density, const std::function<bool (float, float)>& photon_interacting) {
+void exposure(const std::shared_ptr<Medipix> &medipix, float energy, float exposure_time, float flux_density,
+              const std::function<bool(float, float)> &photon_interacting) {
     //flux density in photons per second per square mm
 
-    float total_area = float(medipix->get_num_pixels_x() * medipix->get_num_pixels_y()) * (medipix->get_pixel_pitch() * 0.001f) * (medipix->get_pixel_pitch() * 0.001f);
+    float total_area =
+            float(medipix->get_num_pixels_x() * medipix->get_num_pixels_y()) * (medipix->get_pixel_pitch() * 0.001f) *
+            (medipix->get_pixel_pitch() * 0.001f);
     float duration = exposure_time * float(1E6);
     unsigned int number_of_photons = int(flux_density * total_area * exposure_time);
     unsigned int seed = time(nullptr);
@@ -36,37 +39,55 @@ void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float expos
     std::uniform_real_distribution<float> distribution_x(medipix->get_min_x(), medipix->get_max_x());
     std::uniform_real_distribution<float> distribution_y(medipix->get_min_y(), medipix->get_max_y());
     std::uniform_real_distribution<float> distribution_t(0, duration);
-    //#pragma omp parallel for default(none) shared(generator_x, generator_y, generator_t, medipix, energy, distribution_x, distribution_y, distribution_t, number_of_photons, photon_interacting)
-    for (unsigned int i = 0; i < number_of_photons; ++i){
+    if (medipix->get_timed()) {
+        for (unsigned int i = 0; i < number_of_photons; ++i) {
+            float x = distribution_x(generator_x);
+            float y = distribution_y(generator_y);
+            float t = distribution_t(generator_t);
+            if (photon_interacting(x, y)) {
+                medipix->add_photon(energy, x, y, 3, t);
+            }
+        }
+    } else {
+        #pragma omp parallel for default(none) shared(generator_x, generator_y, generator_t, medipix, energy, distribution_x, distribution_y, distribution_t, number_of_photons, photon_interacting)
+        for (unsigned int i = 0; i < number_of_photons; ++i) {
 
-        float x = distribution_x(generator_x);
-        float y = distribution_y(generator_y);
-        float t = distribution_t(generator_t);
-        if (photon_interacting(x, y)) {
-            medipix->add_photon(energy, x, y, 3, t);
+            float x = distribution_x(generator_x);
+            float y = distribution_y(generator_y);
+            float t = distribution_t(generator_t);
+            if (photon_interacting(x, y)) {
+                medipix->add_photon(energy, x, y, 3, t);
+            }
         }
     }
 }
 
-[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density){
-    exposure(medipix, energy, exposure_time, flux_density, [](float x, float y){return true;});
+[[maybe_unused]] void
+homogeneous_exposure(const std::shared_ptr<Medipix> &medipix, float energy, float exposure_time, float flux_density) {
+    exposure(medipix, energy, exposure_time, flux_density, [](float x, float y) { return true; });
 }
 
-[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, float exposure_time, float flux_density){
+[[maybe_unused]] void
+edge_exposure(const std::shared_ptr<Medipix> &medipix, float energy, float m, float c, float exposure_time,
+              float flux_density) {
     std::function<bool(float, float)> g = [m, c](float _x, float _y) { return edge(_x, _y, m, c); };
     exposure(medipix, energy, exposure_time, flux_density, g);
 }
 
-[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float period, float phase, float n_x, float n_y, float flux_density){
-    float r = std::sqrt(n_x*n_x + n_y*n_y);
+[[maybe_unused]] void
+frequency_exposure(const std::shared_ptr<Medipix> &medipix, float energy, float exposure_time, float period,
+                   float phase, float n_x, float n_y, float flux_density) {
+    float r = std::sqrt(n_x * n_x + n_y * n_y);
     n_x /= r;
     n_y /= r;
-    std::function<bool(float, float)> g = [period, phase, n_x, n_y](float _x, float _y) { return frequency(_x, _y, period, phase, n_x, n_y); };
+    std::function<bool(float, float)> g = [period, phase, n_x, n_y](float _x, float _y) {
+        return frequency(_x, _y, period, phase, n_x, n_y);
+    };
     exposure(medipix, energy, exposure_time, flux_density, g);
 }
 
 bool edge(float x, float y, float m, float c) {
-    return y > m*x + c;
+    return y > m * x + c;
 }
 
 bool frequency(float x, float y, float period, float phase, float n_x, float n_y) {

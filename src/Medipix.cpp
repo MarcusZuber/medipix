@@ -224,3 +224,7 @@ void Medipix::save_pixel_signals(const std::string &filename, unsigned int i, un
     }
     signal_file.close();
 }
+
+bool Medipix::get_timed() const {
+    return timed;
+}
