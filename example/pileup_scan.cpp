@@ -20,6 +20,9 @@
 #include "helper.h"
 #include "MedipixSPM.h"
 
+/**
+ * Simulation of flux dependent count-rate.
+ */
 int main(){
     auto m = std::make_shared<MedipixSPM>(true, 8, 8);
     m->random_threshold_dispersion(1.0f);

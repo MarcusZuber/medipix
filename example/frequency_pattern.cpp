@@ -19,11 +19,13 @@
 #include "MedipixSPM.h"
 #include "helper.h"
 
+/**
+ * Simulation that generated images with different frequencies
+ */
 int main() {
     auto m = std::make_shared<MedipixSPM>(false);
     m->set_psf_sigma(15.f);
     m->random_threshold_dispersion(1.0f);
-    int num_photons = 10000000;
     m->start_frame();
     frequency_exposure(m, 59.6f, 0.01, 550.0f, 0.0f, 1.0f, 0.0f, 1E6);
     m->finish_frame();

@@ -27,9 +27,35 @@
 
 class MedipixSPM: public Medipix {
 public:
+    /**
+     * Constructor for the Medipix in single pixel mode.
+     * @param timed If true, pile-up events are simulated. If false, the simulation is significantly faster.
+     * @param nx Number of pixels in x direction
+     * @param ny Number of pixels in y direction
+     *
+     */
     explicit MedipixSPM(bool timed, unsigned int nx=256, unsigned int ny=256);
+
+    /**
+     * Constructor for the Medipix in single pixel mode.
+     */
     MedipixSPM();
+
+    /**
+     * Resets the current image
+     *
+     * @param energy in keV
+     * @param position_x in um
+     * @param position_y in um
+     * @param radius area in *pixel* in which the charge distribution is calculated
+     * @param time interaction time in us. Only relevant for timed mode.
+     */
     void add_photon(float energy, float position_x, float position_y, int radius, float time) override;
+
+    /**
+     * Finishes the current frame. In timed mode here the pile-up events are processed.
+     * This can take a while.
+     */
     void finish_frame() override;
 };
 

@@ -23,6 +23,9 @@
 #include "MedipixCSM.h"
 #include <fstream>
 
+/**
+ * Simulates charge sharing and stored the pixel signals in a file
+ */
 int main(){
     auto m = std::make_shared<MedipixSPM>(true, 2, 2);
     m->random_threshold_dispersion(1.0f);

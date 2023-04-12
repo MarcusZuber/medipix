@@ -121,3 +121,7 @@ void MedipixCSM::set_th1(float t) {
 float MedipixCSM::get_th1(unsigned int i, unsigned int j) {
     return th1 + th1_dispersion[i*n_pixel_y + j];
 }
+
+[[maybe_unused]] float MedipixCSM::get_th1() {
+    return th1;
+}
