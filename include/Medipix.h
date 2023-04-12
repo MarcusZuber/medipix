@@ -148,6 +148,9 @@ public:
      */
     void random_threshold_dispersion(float sigma);
 
+
+    [[nodiscard]] unsigned int get_num_pixels_x() const;
+    [[nodiscard]] unsigned int get_num_pixels_y() const;
 protected:
     /**
      * Calculates the amount of energy in a single pixel

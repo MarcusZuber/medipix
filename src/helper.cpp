@@ -20,9 +20,16 @@
 #include "helper.h"
 #include "Medipix.h"
 #include <ctime>
+#include <iostream>
 
 
-void exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned int number_of_photons, float duration, const std::function<bool (float, float)>& photon_interacting) {
+void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density, const std::function<bool (float, float)>& photon_interacting) {
+    //flux density in photons per second per square mm
+    float total_area = float(medipix->get_num_pixels_x() * medipix->get_num_pixels_y()) * (medipix->get_pixel_pitch() * 0.001f) * (medipix->get_pixel_pitch() * 0.001f);
+    float duration = exposure_time;
+    unsigned int number_of_photons = int(flux_density * total_area * exposure_time/1E6);
+    std::cout << number_of_photons << std::endl;
+    std::cout << duration << std::endl;
     unsigned int seed = time(nullptr);
     std::default_random_engine generator_x(seed);
     std::default_random_engine generator_y(seed + 1);
@@ -41,21 +48,21 @@ void exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned in
     }
 }
 
-[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned int number_of_photons, float duration){
-    exposure(medipix, energy, number_of_photons, duration, [](float x, float y){return true;});
+[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density){
+    exposure(medipix, energy, exposure_time, flux_density, [](float x, float y){return true;});
 }
 
-[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, unsigned int number_of_photons, float duration){
+[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, float exposure_time, float flux_density){
     std::function<bool(float, float)> g = [m, c](float _x, float _y) { return edge(_x, _y, m, c); };
-    exposure(medipix, energy, number_of_photons, duration, g);
+    exposure(medipix, energy, exposure_time, flux_density, g);
 }
 
-[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned int number_of_photons, float period, float phase, float n_x, float n_y, float duration){
+[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float period, float phase, float n_x, float n_y, float flux_density){
     float r = std::sqrt(n_x*n_x + n_y*n_y);
     n_x /= r;
     n_y /= r;
     std::function<bool(float, float)> g = [period, phase, n_x, n_y](float _x, float _y) { return frequency(_x, _y, period, phase, n_x, n_y); };
-    exposure(medipix, energy, number_of_photons, duration, g);
+    exposure(medipix, energy, exposure_time, flux_density, g);
 }
 
 bool edge(float x, float y, float m, float c) {

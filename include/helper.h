@@ -24,13 +24,48 @@
 
 class Medipix;
 
-[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned int number_of_photons, float duration);
+/**
+ * @brief Homogeneous exposure of the Medipix
+ * @param medipix
+ * @param energy
+ * @param number_of_photons
+ * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted
+ */
+[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density);
 
-[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, unsigned int number_of_photons, float duration);
+/**
+ *
+ * @param medipix
+ * @param energy
+ * @param m
+ * @param c
+ * @param number_of_photons
+ * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted
+ */
+[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, float exposure_time, float flux_density);
 
-[[maybe_unused]] [[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix,float energy, unsigned int number_of_photons, float period, float phase, float n_x, float n_y, float duration);
+/**
+ *
+ * @param medipix
+ * @param energy
+ * @param number_of_photons
+ * @param period
+ * @param phase
+ * @param n_x
+ * @param n_y
+ * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted
+ */
+[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float period, float phase, float n_x, float n_y, float flux_density);
 
-void exposure(const std::shared_ptr<Medipix>& medipix, float energy, unsigned int number_of_photons, float duration, const std::function<bool (float, float)>& photon_interacting);
+/**
+ *
+ * @param medipix
+ * @param energy in keV
+ * @param exposure_time in us
+ * @param flux_density in photons / (s mm^2)
+ * @param photon_interacting
+ */
+void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density, const std::function<bool (float, float)>& photon_interacting);
 
 bool edge(float x, float y, float m, float c);
 
