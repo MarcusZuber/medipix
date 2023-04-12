@@ -28,7 +28,7 @@ class Medipix;
  * @brief Homogeneous exposure of the Medipix
  * @param medipix
  * @param energy
- * @param number_of_photons
+ * @param exposure_time in s
  * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted
  */
 [[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density);
@@ -39,7 +39,7 @@ class Medipix;
  * @param energy
  * @param m
  * @param c
- * @param number_of_photons
+ * @param exposure_time in s
  * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted
  */
 [[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, float exposure_time, float flux_density);
@@ -48,7 +48,7 @@ class Medipix;
  *
  * @param medipix
  * @param energy
- * @param number_of_photons
+ * @param exposure_time in s
  * @param period
  * @param phase
  * @param n_x
@@ -61,7 +61,7 @@ class Medipix;
  *
  * @param medipix
  * @param energy in keV
- * @param exposure_time in us
+ * @param exposure_time in s
  * @param flux_density in photons / (s mm^2)
  * @param photon_interacting
  */

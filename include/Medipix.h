@@ -151,6 +151,8 @@ public:
 
     [[nodiscard]] unsigned int get_num_pixels_x() const;
     [[nodiscard]] unsigned int get_num_pixels_y() const;
+    [[nodiscard]] unsigned int get_real_photons() const;
+    void save_pixel_signals(const std::string& filename, unsigned int i, unsigned int j);
 protected:
     /**
      * Calculates the amount of energy in a single pixel
@@ -200,7 +202,7 @@ protected:
     /**
      * sigma of gaussian shaped psf in um
      */
-    float psf_sigma = 15.0;
+    float psf_sigma = 13.0;
 
     /**
      * x dimension of the sensor in pixel
@@ -271,6 +273,7 @@ protected:
      * @return vector of floats with the signal
      */
     std::vector<float> calculate_pixel_signal(unsigned int i, unsigned int j);
+    unsigned int real_photons = 0;
 };
 
 
