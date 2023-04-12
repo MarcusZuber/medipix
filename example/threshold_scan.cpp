@@ -36,10 +36,10 @@ int main(){
         m->set_th0(th);
 
         m->start_frame();
-        homogeneous_exposure(m, 59.6f, num_photons, 1.0f);
+        homogeneous_exposure(m, 59.6f, 0.01, 1E6);
         m->finish_frame();
 
-        data_file << th << " " << (m->get_total_counts()) << std::endl;
+        data_file << th << " " << m->get_real_photons() << ' '<< m->get_total_counts() << std::endl;
     }
     data_file.close();
 

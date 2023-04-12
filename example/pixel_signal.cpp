@@ -16,16 +16,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+#include <Medipix.h>
+#include <helper.h>
+#include <iostream>
 #include "MedipixSPM.h"
-#include "helper.h"
+#include "MedipixCSM.h"
+#include <fstream>
 
-int main() {
-    auto m = std::make_shared<MedipixSPM>(false);
-    m->set_psf_sigma(15.f);
+int main(){
+    auto m = std::make_shared<MedipixSPM>(true, 2, 2);
     m->random_threshold_dispersion(1.0f);
-    int num_photons = 10000000;
+    m->set_th0(8.0f);
+    m->set_psf_sigma(0.1);
     m->start_frame();
-    frequency_exposure(m, 59.6f, 0.01, 550.0f, 0.0f, 1.0f, 0.0f, 1E6);
+    homogeneous_exposure(m, 59.6, 1E-4, 2E7);
     m->finish_frame();
-    m->save_image("frequency_pattern_spm.raw");
+    m->save_pixel_signals("pixel_signal_0_0.raw", 0, 0);
+    m->save_pixel_signals("pixel_signal_0_1.raw", 0, 1);
+    m->save_pixel_signals("pixel_signal_1_0.raw", 1, 0);
+    m->save_pixel_signals("pixel_signal_1_1.raw", 1, 1);
+    std::cout << m->get_real_photons() << std::endl;
+    std::cout << m->get_total_counts() << std::endl;
 }

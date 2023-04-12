@@ -31,6 +31,7 @@
         pixel = 0;
     }
     max_time = 0.0f;
+    real_photons = 0;
 
     for(auto& event : events){
         event.clear();
@@ -167,6 +168,8 @@ void Medipix::finish_frame() {
 void Medipix::add_photon(float energy, float position_x, float position_y, int radius, float time) {
     if (timed)
         max_time = std::max(max_time, time);
+    std::lock_guard<std::mutex> lk(image_write_mutex);
+    real_photons++;
 }
 
 void Medipix::build_i_krum_response() {
@@ -207,4 +210,17 @@ unsigned int Medipix::get_num_pixels_x() const {
 
 unsigned int Medipix::get_num_pixels_y() const {
     return n_pixel_y;
+}
+
+unsigned int Medipix::get_real_photons() const {
+    return real_photons;
+}
+
+void Medipix::save_pixel_signals(const std::string &filename, unsigned int i, unsigned int j) {
+    auto pixel_signal = calculate_pixel_signal(i, j);
+    std::ofstream signal_file(filename, std::ios::out | std::ios::binary);
+    for (auto& value: pixel_signal) {
+        signal_file.write((char *) &value, sizeof(value));
+    }
+    signal_file.close();
 }

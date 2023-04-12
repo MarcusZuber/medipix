@@ -25,11 +25,10 @@
 
 void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density, const std::function<bool (float, float)>& photon_interacting) {
     //flux density in photons per second per square mm
+
     float total_area = float(medipix->get_num_pixels_x() * medipix->get_num_pixels_y()) * (medipix->get_pixel_pitch() * 0.001f) * (medipix->get_pixel_pitch() * 0.001f);
-    float duration = exposure_time;
-    unsigned int number_of_photons = int(flux_density * total_area * exposure_time/1E6);
-    std::cout << number_of_photons << std::endl;
-    std::cout << duration << std::endl;
+    float duration = exposure_time * float(1E6);
+    unsigned int number_of_photons = int(flux_density * total_area * exposure_time);
     unsigned int seed = time(nullptr);
     std::default_random_engine generator_x(seed);
     std::default_random_engine generator_y(seed + 1);
@@ -37,8 +36,9 @@ void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float expos
     std::uniform_real_distribution<float> distribution_x(medipix->get_min_x(), medipix->get_max_x());
     std::uniform_real_distribution<float> distribution_y(medipix->get_min_y(), medipix->get_max_y());
     std::uniform_real_distribution<float> distribution_t(0, duration);
-#pragma omp parallel for default(none) shared(generator_x, generator_y, generator_t, medipix, energy, distribution_x, distribution_y, distribution_t, number_of_photons, photon_interacting)
+    //#pragma omp parallel for default(none) shared(generator_x, generator_y, generator_t, medipix, energy, distribution_x, distribution_y, distribution_t, number_of_photons, photon_interacting)
     for (unsigned int i = 0; i < number_of_photons; ++i){
+
         float x = distribution_x(generator_x);
         float y = distribution_y(generator_y);
         float t = distribution_t(generator_t);

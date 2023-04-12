@@ -18,14 +18,22 @@
 
 #include "MedipixSPM.h"
 #include "helper.h"
+#include <vector>
+#include <iostream>
 
-int main() {
-    auto m = std::make_shared<MedipixSPM>(false);
-    m->set_psf_sigma(15.f);
+int main(){
+    auto m = std::make_shared<MedipixSPM>(true, 256, 256);
+    m->set_psf_sigma(12.0f);
+    m->set_th0(6.0f);
     m->random_threshold_dispersion(1.0f);
-    int num_photons = 10000000;
-    m->start_frame();
-    frequency_exposure(m, 59.6f, 0.01, 550.0f, 0.0f, 1.0f, 0.0f, 1E6);
-    m->finish_frame();
-    m->save_image("frequency_pattern_spm.raw");
+
+    std::vector<float> flux{ 1E4, 5E4, 1E5, 5E5, 1E6, 5E6, 1E7, 5E7, 1E8, 5E8, 1E9};
+    for (auto& f: flux){
+        std::cout << f << std::endl;
+        m->start_frame();
+        homogeneous_exposure(m, 30.0f, 1/30.f, f);
+        m->finish_frame();
+        m->save_image("flux_" + std::to_string(f) + ".raw");
+    }
+
 }
