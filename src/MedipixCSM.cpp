@@ -21,12 +21,12 @@
 #include "MedipixCSM.h"
 
 MedipixCSM::MedipixCSM(bool timed, unsigned int nx, unsigned ny): Medipix(timed, nx, ny){
-    th1_dispersion.resize(n_pixel_x * n_pixel_y);
+    th1_dispersion.resize(static_cast<std::vector<float>::size_type>(n_pixel_x) * n_pixel_y);
 
 }
 
 MedipixCSM::MedipixCSM(): Medipix(false) {
-    th0_dispersion.resize(n_pixel_x * n_pixel_y);
+    th1_dispersion.resize(static_cast<std::vector<float>::size_type>(n_pixel_x) * n_pixel_y);
 }
 
 void MedipixCSM::add_photon(float energy, float position_x, float position_y, int radius, float time) {

@@ -26,7 +26,7 @@
 #include <ctime>
 
 [[maybe_unused]] void Medipix::start_frame() {
-    image.resize(n_pixel_x * n_pixel_y);
+    image.resize(static_cast<std::vector<unsigned int>::size_type>(n_pixel_x) * n_pixel_y);
     for (auto& pixel: image) {
         pixel = 0;
     }
@@ -146,13 +146,13 @@ void Medipix::random_threshold_dispersion(float sigma) {
 }
 
 Medipix::Medipix(bool timed, unsigned int nx, unsigned int ny) : timed(timed), n_pixel_x(nx), n_pixel_y(ny) {
-    th0_dispersion.resize(n_pixel_x * n_pixel_y);
+    th0_dispersion.resize(static_cast<std::vector<float>::size_type>(n_pixel_x) * n_pixel_y);
     for (auto& pixel: th0_dispersion){
         pixel = 0.0f;
     }
 
     if (timed) {
-        events.resize(n_pixel_x * n_pixel_y);
+        events.resize(static_cast<std::vector<Event>::size_type>(n_pixel_x) * n_pixel_y);
         for (auto& pixel_events: events){
             pixel_events.clear();
         }
