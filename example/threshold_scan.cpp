@@ -23,6 +23,9 @@
 #include "MedipixCSM.h"
 #include <fstream>
 
+/**
+ * Performs a threshold scan in SPM and CSM
+ */
 int main(){
     auto m = std::make_shared<MedipixSPM>(false);
     m->set_psf_sigma(14.f);

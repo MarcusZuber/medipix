@@ -21,6 +21,9 @@
 #include <vector>
 #include <iostream>
 
+/**
+ * Simulation that generates images with different fluxes
+ */
 int main(){
     auto m = std::make_shared<MedipixSPM>(true, 256, 256);
     m->set_psf_sigma(12.0f);

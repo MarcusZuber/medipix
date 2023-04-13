@@ -24,7 +24,9 @@
 #include <list>
 #include <vector>
 
-
+/**
+ * Event struct that stores the time and deposited energy per pixel.
+ */
 struct Event {
     /**
      * Time in us.
@@ -39,6 +41,13 @@ struct Event {
 
 class Medipix {
 public:
+    /**
+     * Constructor for the abstract Medipix class.
+     * @param timed If true, pile-up events are simulated. If false, the simulation is significantly faster.
+     * @param nx Number of pixels in x direction
+     * @param ny Number of pixels in y direction
+     *
+     */
     explicit Medipix(bool timed = false, unsigned int nx=256, unsigned int ny=256);
 
     /**
@@ -59,7 +68,7 @@ public:
      * @param position_x x-component of the position of the interacting photon in um
      * @param position_y y-component of the position of the interacting photon in um
      * @param radius Radius in pixel, in which shared charge could be deposited
-     * @param time interaction Time in us
+     * @param time interaction Time in µs
      */
     virtual void add_photon(float energy, float position_x, float position_y, int radius, float time);
 
@@ -149,30 +158,53 @@ public:
     virtual void random_threshold_dispersion(float sigma);
 
 
+    /**
+     * Getter for the number of pixels in x direction
+     * @return
+     */
     [[nodiscard]] unsigned int get_num_pixels_x() const;
+
+    /**
+     * Getter for the number of pixels in y direction
+     * @return
+     */
     [[nodiscard]] unsigned int get_num_pixels_y() const;
+
+    /**
+     * Getter for the number of real photons that interacted with the sensor
+     * @return
+     */
     [[nodiscard]] unsigned int get_real_photons() const;
+
+    /**
+     * Saves the signals of a single pixel to a raw-file containing floats
+     * @param filename
+     * @param i pixel index in x direction
+     * @param j pixel index in y direction
+     */
     void save_pixel_signals(const std::string& filename, unsigned int i, unsigned int j);
-    bool get_timed() const;
+
+    /**
+     * Returns true if the detector simulates pile-up events
+     * @return
+     */
+    [[nodiscard]] bool get_timed() const;
 
 protected:
     /**
-     * Calculates the amount of energy in a single pixel
+     * Calculates the energy equivalent charge \f$e\f$ in a single pixel with the pixel pitch \f$p\f$, pixel center x/y \f$c_x\f$ \f$c_y\f$
      *
      *
-     *   \f[
-     *   \frac{E}{2\pi\sigma} \int\limits_{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2}^{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2}
-     *   \exp(\frac{x-x_0}{2\sigma^2}) dx
-     *   \int\limits_{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2}^{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2}
-     *   \exp(\frac{y-y_0}{2\sigma^2}) dy
-     *   \f]
-     *
-     *   \f[
-     *      \frac{E}{4} ((erf(\frac{\mbox{pixel_center_x}-\mbox{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma}))
-     *      -(erf(\frac{\mbox{pixel_center_x}+\mbox{pixel_pitch}/2 - x_0}{\sqrt{2}\sigma})))
-     *      ((erf(\frac{\mbox{pixel_center_y}-\mbox{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma}))
-     *      -(erf(\frac{\mbox{pixel_center_y}+\mbox{pixel_pitch}/2 - y_0}{\sqrt{2}\sigma})))
-     *   \f]
+     *   \f{eqnarray*}{
+     *   e &=& \frac{E}{2\pi\sigma} \int\limits_{c_x - p/2}^{c_x + p/2}
+     *   \exp \left( \frac{x-x_0}{2\sigma^2} \right) dx
+     *   \int\limits_{c_y - p/2}^{c_y + p/2}
+     *   \exp\left( \frac{y-y_0}{2\sigma^2} \right) dy \\
+     *   &=& \frac{E}{4} \left(erf\left(\frac{c_x-p/2 - x_0}{\sqrt{2}\sigma}\right)
+     *      -erf\left(\frac{c_x+p/2 - x_0}{\sqrt{2}\sigma}\right)\right)
+     *      \left(erf\left(\frac{c_y-p/2 - y_0}{\sqrt{2}\sigma}\right)
+     *      -erf\left(\frac{c_y+p/2 - y_0}{\sqrt{2}\sigma}\right)\right)
+     *   \f}
      *
      * @param x position of the photon interaction in um
      * @param y position of the photon interaction in um
@@ -275,6 +307,10 @@ protected:
      * @return vector of floats with the signal
      */
     std::vector<float> calculate_pixel_signal(unsigned int i, unsigned int j);
+
+    /**
+     * Number of real photons that interacted with the sensor
+     */
     unsigned int real_photons = 0;
 };
 
