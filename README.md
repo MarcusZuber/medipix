@@ -1,3 +1,5 @@
+![Tests](https://github.com/MarcusZuber/medipix/actions/workflows/test.yml/badge.svg)
+
 # Medipix
 Simple Monte-Carlo simulation of photon counting detectors from the Medipix family
 
