@@ -72,6 +72,8 @@ public:
      */
     virtual void add_photon(float energy, float position_x, float position_y, int radius, float time);
 
+    unsigned int get_pixel_value(unsigned int i, unsigned int j) const;
+
     /**
      * Getter for x dimension of the sensor
      */

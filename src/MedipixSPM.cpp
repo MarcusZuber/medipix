@@ -81,8 +81,8 @@ void MedipixSPM::finish_frame() {
         for (unsigned int i = 0; i < n_pixel_x; ++i){
             for (unsigned int j = 0; j < n_pixel_y; ++j){
                 auto pixel_response = calculate_pixel_signal(i, j);
-                for(unsigned int t = 1; t < pixel_response.size() - 1; ++t){
-                    if(pixel_response[t-1] < get_th0(i, j) && pixel_response[t+1] > get_th0(i, j)) {
+                for(unsigned int t = 1; t < pixel_response.size(); ++t){
+                    if(pixel_response[t-1] < get_th0(i, j) && pixel_response[t] > get_th0(i, j)) {
                         increase_counter(i, j);
                     }
                 }
