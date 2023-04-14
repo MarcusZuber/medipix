@@ -21,6 +21,8 @@
 #include "Medipix.h"
 #include <ctime>
 #include <iostream>
+#include <omp.h>
+#include <chrono>
 
 
 void exposure(const std::shared_ptr<Medipix> &medipix, float energy, float exposure_time, float flux_density,
@@ -32,34 +34,25 @@ void exposure(const std::shared_ptr<Medipix> &medipix, float energy, float expos
             (medipix->get_pixel_pitch() * 0.001f);
     float duration = exposure_time * float(1E6);
     unsigned int number_of_photons = int(flux_density * total_area * exposure_time);
-    unsigned int seed = time(nullptr);
-    std::default_random_engine generator_x(seed);
-    std::default_random_engine generator_y(seed + 1);
-    std::default_random_engine generator_t(seed + 2);
-    std::uniform_real_distribution<float> distribution_x(medipix->get_min_x(), medipix->get_max_x());
-    std::uniform_real_distribution<float> distribution_y(medipix->get_min_y(), medipix->get_max_y());
-    std::uniform_real_distribution<float> distribution_t(0, duration);
-    if (medipix->get_timed()) {
-        for (unsigned int i = 0; i < number_of_photons; ++i) {
-            float x = distribution_x(generator_x);
-            float y = distribution_y(generator_y);
-            float t = distribution_t(generator_t);
-            if (photon_interacting(x, y)) {
-                medipix->add_photon(energy, x, y, 3, t);
-            }
-        }
-    } else {
-        #pragma omp parallel for default(none) shared(generator_x, generator_y, generator_t, medipix, energy, distribution_x, distribution_y, distribution_t, number_of_photons, photon_interacting)
-        for (unsigned int i = 0; i < number_of_photons; ++i) {
 
-            float x = distribution_x(generator_x);
-            float y = distribution_y(generator_y);
-            float t = distribution_t(generator_t);
-            if (photon_interacting(x, y)) {
-                medipix->add_photon(energy, x, y, 3, t);
-            }
+    unsigned int seed = time(nullptr);
+    #pragma omp parallel for default(none) shared(medipix, energy, number_of_photons, photon_interacting, duration, seed)
+    for (unsigned int i = 0; i < number_of_photons; ++i) {
+        std::random_device randomDevice;
+        std::mt19937 twisterEngine(randomDevice());
+        twisterEngine.seed(seed + i);
+        std::uniform_real_distribution<float> distribution_x(medipix->get_min_x(), medipix->get_max_x());
+        std::uniform_real_distribution<float> distribution_y(medipix->get_min_y(), medipix->get_max_y());
+        std::uniform_real_distribution<float> distribution_t(0.f, duration);
+        float x = distribution_x(twisterEngine);
+        float y = distribution_y(twisterEngine);
+        float t = distribution_t(twisterEngine);
+
+        if (photon_interacting(x, y)) {
+            medipix->add_photon(energy, x, y, 3, t);
         }
     }
+
 }
 
 [[maybe_unused]] void
