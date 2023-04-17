@@ -42,4 +42,10 @@ if (GNUPLOT_FOUND)
             DEPENDS pixel_signal
             BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/pixel_signal_*.raw ${CMAKE_CURRENT_BINARY_DIR}/pixel_signal.pdf)
 
+    add_custom_target(plot_flux_nps
+            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/flux_images
+            COMMAND gnuplot -e ${GNUPLOT_INPUT_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gnuplot/plot_nps.gp
+            DEPENDS flux_images
+            BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/flux_*.raw ${CMAKE_CURRENT_BINARY_DIR}/nps.pdf)
+
 endif (GNUPLOT_FOUND)

@@ -7,7 +7,7 @@ find_package(OpenMP REQUIRED)
 include_directories(include)
 
 add_library(medipix src/Medipix.cpp src/helper.cpp src/MedipixSPM.cpp src/MedipixCSM.cpp )
-target_link_libraries(medipix PRIVATE OpenMP::OpenMP_CXX)
+target_link_libraries(medipix PRIVATE OpenMP::OpenMP_CXX fftw3)
 
 add_subdirectory(tests)
 

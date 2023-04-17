@@ -192,6 +192,16 @@ public:
      */
     [[nodiscard]] bool get_timed() const;
 
+    /**
+     * Calculates the fourier spectrum of the current image
+     *
+     */
+     std::vector<float> get_fourier_spectrum();
+
+     /**
+      * Save fourier spectrum to file
+      */
+        void save_fourier_spectrum(const std::string& filename);
 protected:
     /**
      * Calculates the energy equivalent charge \f$e\f$ in a single pixel with the pixel pitch \f$p\f$, pixel center x/y \f$c_x\f$ \f$c_y\f$
@@ -223,7 +233,9 @@ protected:
      * @param j pixel
      * @return threshold in keV
      */
-    float get_th0(unsigned int i, unsigned int j);
+    [[nodiscard]] inline float get_th0(unsigned int i, unsigned int j) const{
+        return th0 + th0_dispersion[i * n_pixel_y + j];
+    }
 
     /**
      * Threshold zero in keV
