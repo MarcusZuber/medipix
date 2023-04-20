@@ -42,11 +42,11 @@ public:
     MedipixSPM();
 
     /**
-     * Resets the current image
+     * Adds an interacting photon.
      *
      * @param energy in keV
-     * @param position_x in um
-     * @param position_y in um
+     * @param position_x Interaction position in um
+     * @param position_y Interaction position in um
      * @param radius area in *pixel* in which the charge distribution is calculated
      * @param time interaction time in us. Only relevant for timed mode.
      */
