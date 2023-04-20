@@ -10,6 +10,7 @@ Simple Monte-Carlo simulation of photon counting detectors from the Medipix fami
 * cmake
 * openMP
 * gnuplot (for crating the plots of the examples)
+* fftw3
 
 ## Simulation
 
