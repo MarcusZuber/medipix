@@ -159,7 +159,7 @@ Medipix::Medipix(bool timed, unsigned int nx, unsigned int ny) : timed(timed), n
 
 void Medipix::finish_frame() {
     if (timed) {
-        build_i_krum_response();
+        build_i_krum_response(i_krum);
     }
 }
 
@@ -286,4 +286,64 @@ void Medipix::save_fourier_spectrum(const std::string &filename) {
         image_file.write((char *) &pixel_value, sizeof(pixel_value));
     }
     image_file.close();
+}
+
+
+void Medipix::build_i_krum_response(int _i_krum) {
+    if (_i_krum < 1 or _i_krum > 100)
+        throw std::invalid_argument("i_krum must be between 1 and 100.");
+
+    // Fitted values from the paper https://iopscience.iop.org/article/10.1088/1748-0221/10/01/C01047/
+    // with the response function "response" below.
+    std::vector<int> i_krum_model = {1, 10, 20, 50, 70, 100};
+    std::vector<float> wn = {4.89624784, 5.86311405, 8.00195927, 16.50273734, 15.77001966, 17.26883039};
+    std::vector<float> wd = {14.90772755, 11.88862317, 43.40896533, 7.22433423, 12.83117555, 19.05247813};
+    std::vector<float> d = {2.9689961, 2.65441403, 1.54012187, 0.69959799, 0.66982567, 0.53208576};
+
+    int index_l=0, index_r=0;
+    for(int i = 0; i < (i_krum_model.size()-1); ++i){
+        if(_i_krum >= i_krum_model[i] && _i_krum < i_krum_model[i + 1]){
+            index_l = i;
+            index_r = i+1;
+            break;
+        }
+    }
+    float t = float(_i_krum - i_krum_model[index_l]) / float(i_krum_model[index_r] - i_krum_model[index_l]);
+    float wn_i = wn[index_l] + t * (wn[index_r] - wn[index_l]);
+    float wd_i = wd[index_l] + t * (wd[index_r] - wd[index_l]);
+    float d_i = d[index_l] + t * (d[index_r] - d[index_l]);
+
+    auto response = [](float x_, float wn_, float wd_, float d_)
+    {
+        float y= 0;
+        // https://www.tutorialspoint.com/control_systems/control_systems_response_second_order.htm
+        if(0 < d_ && d_ < 1) {
+            y = (wn_ * expf(-d_ * wn_ * x_)) / sqrtf(1 - powf(d_, 2)) * sinf(wd_ * x_);
+        }
+        if(d_ > 1) {
+            y = (wn_ / (2 * sqrtf(powf(d_, 2) - 1))) * (
+                    expf(-(d_ * wn_ - wn_ * sqrtf(powf(d_, 2) - 1)) * x_) - expf(-(d_ * wn_ + wn_ * sqrtf(powf(d_, 2) - 1)) * x_));
+        }
+        if(d_ == 1) {
+            y = powf(wn_, 2) * x_ * expf(-wn_ * x_);
+        }
+        if(d_ <= 0) {
+            y = wn_ * sinf(wn_ * x_);
+        }
+        return y;
+    };
+
+    float max_resp_time = 5.f;
+    unsigned int n_response_points = int(max_resp_time * float(samples_per_us));
+    response_function.clear();
+    response_function.resize(n_response_points, 0.f);
+    float max_response = 0.f;
+    for(unsigned int i = 0; i < n_response_points; ++i){
+        float x = float(i) / float(samples_per_us);
+        response_function[i] = response(x, wn_i, wd_i, d_i);
+        if(response_function[i] > max_response)
+            max_response = response_function[i];
+    }
+    for(auto &r: response_function)
+        r /= max_response;
 }

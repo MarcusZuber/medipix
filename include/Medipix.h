@@ -237,6 +237,8 @@ protected:
         return th0 + th0_dispersion[i * n_pixel_y + j];
     }
 
+    int i_krum = 20;
+
     /**
      * Threshold zero in keV
      */
@@ -308,6 +310,15 @@ protected:
      * Calculates the response function of the preamplifier
      */
     void build_i_krum_response();
+
+    /**
+     * Calculates the response function of the preamplifier
+     *
+     * A model function was fitted to the data shown in https://iopscience.iop.org/article/10.1088/1748-0221/10/01/C01047/
+     * allowing to interpolate the response function for any value of i_krum in the range from 1 to 100.
+     * @param _i_krum
+     */
+    void build_i_krum_response(int _i_krum);
 
     /**
      * Samples per microsecond for the preamplifier response and pileup simulation
