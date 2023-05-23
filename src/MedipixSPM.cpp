@@ -68,7 +68,9 @@ void MedipixSPM::add_photon(float energy, float position_x, float position_y, in
             auto pixel_center = get_pixel_center(i, j);
             float dep_energy = calculate_shared_energy(position_x, position_y, energy, pixel_center.first,
                                                        pixel_center.second);
-            Event event(time, dep_energy);
+            Event event{};
+            event.time=time;
+            event.energy=dep_energy;
             events[i * n_pixel_y + j].emplace_back(event);
         }
     }
