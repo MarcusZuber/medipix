@@ -72,7 +72,9 @@ public:
      */
     virtual void add_photon(float energy, float position_x, float position_y, int radius, float time);
 
-    unsigned int get_pixel_value(unsigned int i, unsigned int j) const;
+    [[nodiscard]] unsigned int get_pixel_value(unsigned int i, unsigned int j) const;
+
+    [[maybe_unused]] bool get_shutter_open() const;
 
     /**
      * Getter for x dimension of the sensor in µm
@@ -337,6 +339,8 @@ protected:
      * Number of real photons that interacted with the sensor
      */
     unsigned int real_photons = 0;
+
+    bool shutter_open = false;
 };
 
 

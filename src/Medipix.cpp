@@ -37,7 +37,7 @@
     for (auto &event: events) {
         event.clear();
     }
-
+    shutter_open = true;
 }
 
 float Medipix::get_min_x() const {
@@ -161,9 +161,12 @@ void Medipix::finish_frame() {
     if (timed) {
         build_i_krum_response(i_krum);
     }
+    shutter_open = false;
 }
 
 void Medipix::add_photon(float energy, float position_x, float position_y, int radius, float time) {
+    if (!shutter_open)
+        throw std::logic_error("Shutter not open. Call start_frame() before.");
     if (timed)
         max_time = std::max(max_time, time);
     std::lock_guard<std::mutex> lk(image_write_mutex);
@@ -215,6 +218,8 @@ unsigned int Medipix::get_real_photons() const {
 }
 
 void Medipix::save_pixel_signals(const std::string &filename, unsigned int i, unsigned int j) {
+    if (shutter_open)
+        throw std::logic_error("Shutter open. Call finish_frame() before.");
     auto pixel_signal = calculate_pixel_signal(i, j);
     std::ofstream signal_file(filename, std::ios::out | std::ios::binary);
     for (auto &value: pixel_signal) {
@@ -228,10 +233,18 @@ bool Medipix::get_timed() const {
 }
 
 unsigned int Medipix::get_pixel_value(unsigned int i, unsigned int j) const {
+    if (shutter_open)
+        throw std::logic_error("Shutter open. Call finish_frame() before.");
     return image[i * n_pixel_y + j];
 }
 
+bool Medipix::get_shutter_open() const {
+    return shutter_open;
+}
+
 std::vector<float> Medipix::get_fourier_spectrum() {
+    if (shutter_open)
+        throw std::logic_error("Shutter open. Call finish_frame() before.");
     std::vector<fftw_complex> fourier_spectrum(n_pixel_x * n_pixel_y);
     std::vector<double> image_float(n_pixel_x * n_pixel_y);
     for (unsigned int k = 0; k < n_pixel_x * n_pixel_y; ++k) {
@@ -278,6 +291,8 @@ std::vector<float> Medipix::get_fourier_spectrum() {
 }
 
 void Medipix::save_fourier_spectrum(const std::string &filename) {
+    if (shutter_open)
+        throw std::logic_error("Shutter open. Call finish_frame() before.");
     auto spectrum = get_fourier_spectrum();
     std::ofstream image_file(filename, std::ios::out | std::ios::binary);
 
