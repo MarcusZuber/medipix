@@ -29,7 +29,7 @@
  */
 struct Event {
     /**
-     * Time in us.
+     * Time in µs.
      */
     float time;
 
@@ -65,8 +65,8 @@ public:
      * Simulates the interaction of a single photon.
      *
      * @param energy Energy of the interacting in keV
-     * @param position_x x-component of the position of the interacting photon in um
-     * @param position_y y-component of the position of the interacting photon in um
+     * @param position_x x-component of the position of the interacting photon in µm
+     * @param position_y y-component of the position of the interacting photon in µm
      * @param radius Radius in pixel, in which shared charge could be deposited
      * @param time interaction Time in µs
      */
@@ -75,22 +75,22 @@ public:
     unsigned int get_pixel_value(unsigned int i, unsigned int j) const;
 
     /**
-     * Getter for x dimension of the sensor
+     * Getter for x dimension of the sensor in µm
      */
     [[nodiscard]] float get_min_x() const;
 
     /**
-     * Getter for x dimension of the sensor
+     * Getter for x dimension of the sensor in µm
      */
     [[nodiscard]] float get_max_x() const;
 
     /**
-     * Getter for y dimension of the sensor
+     * Getter for y dimension of the sensor in µm
      */
     [[nodiscard]] float get_min_y() const;
 
     /**
-     * Getter for y dimension of the sensor
+     * Getter for y dimension of the sensor in µm
      */
     [[nodiscard]] float get_max_y() const ;
 
@@ -102,19 +102,19 @@ public:
 
     /**
      * Getter for pixel pitch
-     * @return Pixel pitch in um
+     * @return Pixel pitch in µm
      */
     [[maybe_unused]] [[nodiscard]] float get_pixel_pitch() const;
 
     /**
      * Getter for sigma of gaussian shaped psf
-     * @return sigma in um
+     * @return sigma in µm
      */
     [[maybe_unused]] [[nodiscard]] float get_psf_sigma() const;
 
     /**
      * Setter for sigma of gaussian shaped psf
-     * @param s sigma in um
+     * @param s sigma in µm
      */
     [[maybe_unused]] [[maybe_unused]] void set_psf_sigma(float s);
 
@@ -126,8 +126,8 @@ public:
 
     /**
      * Gets pixel index of the pixel where (position_x, position_y) is located in
-     * @param position_x
-     * @param position_y
+     * @param position_x in µm
+     * @param position_y in µm
      * @return pair of unsigned int with the pixel indices
      */
     [[nodiscard]] std::pair<unsigned int, unsigned int> get_pixel_index(float position_x, float position_y) const;
@@ -136,7 +136,7 @@ public:
      * Calculates the pixel center of a pixel with index (i, j)
      * @param i
      * @param j
-     * @return pair of floats with the pixel center
+     * @return pair of floats with the pixel center in µm
      */
     [[nodiscard]] std::pair<float, float> get_pixel_center(unsigned int i, unsigned int j) const;
 
@@ -218,11 +218,11 @@ protected:
      *      -erf\left(\frac{c_y+p/2 - y_0}{\sqrt{2}\sigma}\right)\right)
      *   \f}
      *
-     * @param x position of the photon interaction in um
-     * @param y position of the photon interaction in um
+     * @param x position of the photon interaction in µm
+     * @param y position of the photon interaction in µm
      * @param energy energy of the photon in keV
-     * @param pixel_center_x in um
-     * @param pixel_center_y in um
+     * @param pixel_center_x in µm
+     * @param pixel_center_y in µm
      * @return
      */
     [[nodiscard]] float calculate_shared_energy( float x, float y, float energy, float pixel_center_x, float pixel_center_y) const;
@@ -245,12 +245,12 @@ protected:
     float th0 = 6.0;
 
     /**
-     * pixel pitch in um
+     * pixel pitch in µm
      */
     float pixel_pitch = 55.0;
 
     /**
-     * sigma of gaussian shaped psf in um
+     * sigma of gaussian shaped psf in µm
      */
     float psf_sigma = 13.0;
 
@@ -265,7 +265,7 @@ protected:
     unsigned int n_pixel_y;
 
     /**
-     * Last timepoint of an interaction in the current exposure in us
+     * Last time of an interaction in the current exposure in µs
      */
     float max_time = 0.f;
 
