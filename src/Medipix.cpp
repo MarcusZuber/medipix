@@ -245,8 +245,8 @@ bool Medipix::get_shutter_open() const {
 std::vector<float> Medipix::get_fourier_spectrum() {
     if (shutter_open)
         throw std::logic_error("Shutter open. Call finish_frame() before.");
-    std::vector<fftw_complex> fourier_spectrum(n_pixel_x * n_pixel_y);
-    std::vector<double> image_float(n_pixel_x * n_pixel_y);
+    std::vector<fftw_complex> fourier_spectrum((size_t) n_pixel_x * n_pixel_y);
+    std::vector<double> image_float((size_t) n_pixel_x * n_pixel_y);
     for (unsigned int k = 0; k < n_pixel_x * n_pixel_y; ++k) {
         image_float[k] = double(image[k]);
     }
