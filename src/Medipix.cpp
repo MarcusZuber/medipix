@@ -257,16 +257,16 @@ std::vector<float> Medipix::get_fourier_spectrum() {
     unsigned int n_k = std::min(n_pixel_x, n_pixel_y) / 2;
     std::vector<float> spectrum(n_k, 0.f);
     std::vector<unsigned int> spectrum_count(n_k, 0);
-    double center[2] = {double(n_pixel_x) / 2.0, double(n_pixel_y) / 2.0};
+    float center[2] = {static_cast<float>(n_pixel_x / 2.0), static_cast<float>((n_pixel_y) / 2.0)};
     for (int i = 0; i < n_pixel_x; ++i) {
         for (int j = 0; j < n_pixel_y; ++j) {
             double x_distance, y_distance;
-            if (i < center[0]) {
+            if (i < int(center[0])) {
                 x_distance = double(i);
             } else {
                 x_distance = double(i) - center[0];
             }
-            if (j < center[1]) {
+            if (j < int(center[1])) {
                 y_distance = double(j);
             } else {
                 y_distance = double(j) - center[1];
@@ -276,8 +276,8 @@ std::vector<float> Medipix::get_fourier_spectrum() {
             unsigned int r = int(std::sqrt(x_distance * x_distance + y_distance * y_distance));
             if (r > n_k)
                 continue;
-            spectrum[r] += std::sqrt(fourier_spectrum[i * n_pixel_y + j][0] * fourier_spectrum[i * n_pixel_y + j][0] +
-                                     fourier_spectrum[i * n_pixel_y + j][1] * fourier_spectrum[i * n_pixel_y + j][1]);
+            spectrum[r] += float(std::sqrt(fourier_spectrum[i * n_pixel_y + j][0] * fourier_spectrum[i * n_pixel_y + j][0] +
+                                     fourier_spectrum[i * n_pixel_y + j][1] * fourier_spectrum[i * n_pixel_y + j][1]));
             spectrum_count[r] += 1;
         }
     }
