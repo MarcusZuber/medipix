@@ -78,7 +78,7 @@ void MedipixSPM::finish_frame() {
     Medipix::finish_frame();
     if (timed) {
         std::lock_guard<std::mutex> lk(image_write_mutex);
-        #pragma parallel for default(none) shared(events)
+        #pragma omp parallel for default(none) shared(events)
         for (unsigned int index = 0; index < n_pixel_x * n_pixel_y; ++index) {
             unsigned int i = index / n_pixel_y;
             unsigned int j = index % n_pixel_y;
