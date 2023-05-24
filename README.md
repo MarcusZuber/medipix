@@ -27,9 +27,6 @@ Simple Monte-Carlo simulation of photon counting detectors from the Medipix fami
   * No depth-dependence of the charge collection efficiency.
   * No fluorescence.
 
-* Single pixel mode:
-  * Simplified I_Krum response function for pile-up simulation.
-
 * Charge summing mode:
   * No pile-up simulation.
   * Assuming, that charge is only shared in a 2x2 pixel area.
