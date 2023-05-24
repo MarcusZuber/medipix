@@ -18,6 +18,8 @@ add_executable(flux_images flux_images.cpp)
 target_link_libraries(flux_images medipix)
 
 if (GNUPLOT_FOUND)
+    set(GNUPLOT_INPUT_DIR \"input_dir='${CMAKE_CURRENT_BINARY_DIR}'\")
+
     set(GNUPLOT_INPUT_FILE_SPM \"input_file_spm='${CMAKE_CURRENT_BINARY_DIR}/threshold_scan_spm.txt'\")
     set(GNUPLOT_INPUT_FILE_CSM \"input_file_csm='${CMAKE_CURRENT_BINARY_DIR}/threshold_scan_csm.txt'\")
 
@@ -46,6 +48,12 @@ if (GNUPLOT_FOUND)
             COMMAND ${CMAKE_CURRENT_BINARY_DIR}/flux_images
             COMMAND gnuplot -e ${GNUPLOT_INPUT_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gnuplot/plot_nps.gp
             DEPENDS flux_images
-            BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/flux_*.raw ${CMAKE_CURRENT_BINARY_DIR}/nps.pdf)
+            BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/flux_*.raw ${CMAKE_CURRENT_BINARY_DIR}/nps.png)
+
+    add_custom_target(plot_pileup_scan
+            COMMAND ${CMAKE_CURRENT_BINARY_DIR}/pileup_scan
+            COMMAND gnuplot -e ${GNUPLOT_INPUT_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gnuplot/plot_pileup_scan.gp
+            DEPENDS pileup_scan
+            BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/pileup_scan.txt ${CMAKE_CURRENT_BINARY_DIR}/pileup.png)
 
 endif (GNUPLOT_FOUND)
