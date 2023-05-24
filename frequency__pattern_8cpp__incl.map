@@ -1,0 +1,21 @@
+<map id="example/frequency_pattern.cpp" name="example/frequency_pattern.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="86,5,286,31"/>
+<area shape="rect" id="Node000002" href="$MedipixSPM_8h.html" title=" " alt="" coords="79,79,183,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="179,33,151,69,147,65,175,30"/>
+<area shape="rect" id="Node000008" href="$helper_8h.html" title=" " alt="" coords="219,79,286,105"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="199,29,234,66,230,70,195,33"/>
+<area shape="rect" id="Node000003" href="$Medipix_8h.html" title=" " alt="" coords="94,153,169,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="134,105,134,138,129,138,129,105"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,226,44,252"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="123,107,84,154,42,215,38,212,80,151,119,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="68,226,120,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="127,180,109,214,104,212,123,177"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="226,226,293,252"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="154,177,226,216,223,221,152,181"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="115,181,56,220,53,215,112,177"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="144,226,201,252"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="140,177,161,212,156,215,136,180"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="256,105,261,211,255,211,250,105"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="290,153,367,178"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="267,103,307,140,303,144,264,107"/>
+</map>

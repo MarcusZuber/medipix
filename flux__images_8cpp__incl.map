@@ -1,0 +1,24 @@
+<map id="example/flux_images.cpp" name="example/flux_images.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="205,5,370,31"/>
+<area shape="rect" id="Node000002" href="$MedipixSPM_8h.html" title=" " alt="" coords="44,79,149,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="256,34,144,76,142,71,254,29"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="280,226,337,252"/>
+<area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="292,31,301,79,310,211,305,212,295,79,287,32"/>
+<area shape="rect" id="Node000008" href="$helper_8h.html" title=" " alt="" coords="219,79,286,105"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="284,32,267,67,262,64,279,30"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="361,79,432,105"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="307,29,367,68,365,73,304,34"/>
+<area shape="rect" id="Node000003" href="$Medipix_8h.html" title=" " alt="" coords="59,153,134,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="99,105,99,138,94,138,94,105"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="5,226,44,252"/>
+<area shape="poly" id="edge7_Node000002_Node000006" title=" " alt="" coords="86,107,67,128,50,154,38,183,31,212,26,211,33,182,45,151,63,125,82,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="71,226,122,252"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="99,179,99,211,94,211,94,179"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="175,226,242,252"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="117,177,179,216,176,220,114,181"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="87,180,49,218,45,214,83,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="133,176,267,221,265,226,132,181"/>
+<area shape="poly" id="edge9_Node000008_Node000005" title=" " alt="" coords="256,105,257,139,250,179,230,216,225,213,245,177,251,138,251,105"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="158,153,235,178"/>
+<area shape="poly" id="edge10_Node000008_Node000009" title=" " alt="" coords="245,107,217,142,213,139,241,103"/>
+</map>

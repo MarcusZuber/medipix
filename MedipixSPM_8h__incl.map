@@ -1,0 +1,14 @@
+<map id="include/MedipixSPM.h" name="include/MedipixSPM.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="162,5,311,31"/>
+<area shape="rect" id="Node000002" href="$Medipix_8h.html" title=" " alt="" coords="161,79,237,105"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,32,214,67,210,65,228,30"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="254,153,293,178"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="242,31,270,137,264,139,237,32"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,153,57,178"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="172,108,71,150,69,145,169,103"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="81,153,149,178"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="186,107,142,145,138,141,183,103"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="214,103,253,140,249,144,210,107"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="173,153,230,178"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="202,105,203,138,198,138,197,105"/>
+</map>
