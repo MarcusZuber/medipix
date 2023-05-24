@@ -31,7 +31,7 @@ class Medipix;
  * @param exposure_time in s
  * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted in photons / (s mm^2)
  */
-[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density);
+[[maybe_unused]] void homogeneous_exposure(const std::shared_ptr<Medipix>& medipix, float energy, double exposure_time, double flux_density);
 
 /**
  *
@@ -42,7 +42,7 @@ class Medipix;
  * @param exposure_time in s
  * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted in photons / (s mm^2)
  */
-[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, float exposure_time, float flux_density);
+[[maybe_unused]] void edge_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float m, float c, double exposure_time, double flux_density);
 
 /**
  *
@@ -55,7 +55,7 @@ class Medipix;
  * @param n_y Vector of the normal of the sin-wave in y-direction
  * @param flux_density Flux density is used to calculate the time period in which number_of_photons are emitted in photons / (s mm^2)
  */
-[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float period, float phase, float n_x, float n_y, float flux_density);
+[[maybe_unused]] void frequency_exposure(const std::shared_ptr<Medipix>& medipix, float energy, double exposure_time, float period, float phase, float n_x, float n_y, double flux_density);
 
 /**
  *
@@ -66,7 +66,7 @@ class Medipix;
  * @param photon_interacting Function that returns true if the photon is interacting with the detector.
  *  The function takes the x and y position of the photon in um as arguments.
  */
-void exposure(const std::shared_ptr<Medipix>& medipix, float energy, float exposure_time, float flux_density, const std::function<bool (float, float)>& photon_interacting);
+void exposure(const std::shared_ptr<Medipix>& medipix, float energy, double exposure_time, double flux_density, const std::function<bool (float, float)>& photon_interacting);
 
 
 /**
@@ -91,5 +91,13 @@ bool edge(float x, float y, float m, float c);
  * @return
  */
 bool frequency(float x, float y, float period, float phase, float n_x, float n_y);
+
+/**
+ * Draws a random interaction depth for a mu rho
+ * @param mu_norm in cm^2/g
+ * @param rho in g/cm^3
+ * @return
+ */
+[[maybe_unused]] float get_random_free_path(float mu_norm, float rho);
 
 #endif //MEDIPIX_HELPER_H

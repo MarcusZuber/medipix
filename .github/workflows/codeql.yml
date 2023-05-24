@@ -55,10 +55,12 @@ jobs:
         # queries: security-extended,security-and-quality
 
 
-    # Autobuild attempts to build any compiled languages  (C/C++, C#, Go, or Java).
-    # If this step fails, then you should remove it and run the build manually (see below)
-    - name: Autobuild
-      uses: github/codeql-action/autobuild@v2
+    # Out-of-source build would be nicer, but it will be deleted after the check anyway...
+    - name: build
+      run: |
+        sudo apt-get install -y libfftw3-dev
+        cmake . -DCMAKE_BUILD_TYPE=Debug
+        make
 
     # ℹ️ Command-line programs to run using the OS shell.
     # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun

@@ -25,18 +25,19 @@
  * Simulation that generates images with different fluxes
  */
 int main(){
-    auto m = std::make_shared<MedipixSPM>(true, 256, 256);
-    m->set_psf_sigma(12.0f);
+    auto m = std::make_shared<MedipixSPM>(true, 128, 128);
+    m->set_psf_sigma(13.0f);
     m->set_th0(6.0f);
     m->random_threshold_dispersion(1.0f);
 
-    std::vector<float> flux{ 1E4, 5E4, 1E5, 5E5, 1E6, 5E6, 1E7, 5E7, 1E8, 5E8, 1E9};
+    std::vector<double> flux{1E4, 1E5, 1E6, 1E7,  1E8, 1E9};
     for (auto& f: flux){
         std::cout << f << std::endl;
         m->start_frame();
-        homogeneous_exposure(m, 30.0f, 1/30.f, f);
+        homogeneous_exposure(m, 30.0f, float(1E3)/f, f);
         m->finish_frame();
-        m->save_image("flux_" + std::to_string(f) + ".raw");
+        //m->save_image("flux_" + std::to_string(long(f)) + ".raw");
+        m->save_fourier_spectrum("flux_" + std::to_string(long(f)) + "_fourier.raw");
     }
 
 }
