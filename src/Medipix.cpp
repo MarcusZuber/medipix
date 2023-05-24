@@ -362,3 +362,13 @@ void Medipix::build_i_krum_response(int _i_krum) {
     for(auto &r: response_function)
         r /= max_response;
 }
+
+int Medipix::get_i_krum() const {
+    return i_krum;
+}
+
+void Medipix::set_i_krum(int value) {
+    if(value < 1 or value > 100)
+        throw std::invalid_argument("i_krum must be between 1 and 100.");
+    i_krum = value;
+}

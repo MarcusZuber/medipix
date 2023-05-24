@@ -200,10 +200,17 @@ public:
      */
      std::vector<float> get_fourier_spectrum();
 
-     /**
-      * Save fourier spectrum to file
-      */
-        void save_fourier_spectrum(const std::string& filename);
+
+    /**
+     * Getter for the I_krum value in DAC units.
+     */
+    [[maybe_unused]] [[nodiscard]] int get_i_krum() const;
+
+    /**
+     * Setter for the I_krum value in DAC units.
+     */
+    [[maybe_unused]] void set_i_krum(int value);
+
 protected:
     /**
      * Calculates the energy equivalent charge \f$e\f$ in a single pixel with the pixel pitch \f$p\f$, pixel center x/y \f$c_x\f$ \f$c_y\f$
