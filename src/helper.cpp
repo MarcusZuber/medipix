@@ -83,6 +83,30 @@ bool edge(float x, float y, float m, float c) {
     return y > m * x + c;
 }
 
+float get_random_free_path(float mu_norm, float rho) {
+    float mu = mu_norm * rho;
+
+    // From beer-lambert:
+    // PDF(x) = exp(-mu * x) / mu
+    // CTF(x) =  (-1/mu) * (exp(-mu * x) - 1)
+    // CTF^-1(y) = -ln(1 - y * mu) / mu.
+
+    // With the inverse transfer method we sample now the interaction depth.
+
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    float max_range = std::min(1.0f, 1.0f/mu);
+    static std::uniform_real_distribution<float> dis(0.0, max_range);
+    float u = dis(gen);
+    float x = -std::log(1 - u * mu) / mu;
+    //while (x <= 0 || x!=x) {
+    //    u = dis(gen);
+    //    x = -std::log(1 - u * mu) / mu;
+    //}
+    return x * 1E4f; // in um
+}
+
+
 bool frequency(float x, float y, float period, float phase, float n_x, float n_y) {
     float a1 = n_x * x + n_y * y;
     float probability = sinf(2.f * M_PIf * a1 / period + phase);

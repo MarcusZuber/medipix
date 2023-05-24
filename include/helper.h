@@ -92,4 +92,12 @@ bool edge(float x, float y, float m, float c);
  */
 bool frequency(float x, float y, float period, float phase, float n_x, float n_y);
 
+/**
+ * Draws a random interaction depth for a mu rho
+ * @param mu_norm in cm^2/g
+ * @param rho in g/cm^3
+ * @return
+ */
+[[maybe_unused]] float get_random_free_path(float mu_norm, float rho);
+
 #endif //MEDIPIX_HELPER_H
