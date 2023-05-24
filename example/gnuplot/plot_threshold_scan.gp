@@ -1,5 +1,5 @@
-set terminal pdf
-set output "threshold_scan.pdf"
+set terminal png
+set output "threshold_scan.png"
 set grid
 set xlabel 'energy threshold / keV'
 set ylabel 'differential counts'

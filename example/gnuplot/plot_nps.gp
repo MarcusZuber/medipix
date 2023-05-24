@@ -1,5 +1,5 @@
-set terminal pdf
-set output "nps.pdf"
+set terminal png
+set output "nps.png"
 set grid
 #set xlabel 'time / µs'
 set xlabel 'Frequency / Nyquist frequency'

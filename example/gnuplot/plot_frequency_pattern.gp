@@ -1,5 +1,5 @@
-set terminal pdf
-set output "frequency_pattern.pdf"
+set terminal png
+set output "frequency_pattern.png"
 set xlabel "Pixel"
 set ylabel "Pixel"
 set autoscale fix
