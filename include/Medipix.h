@@ -48,7 +48,7 @@ public:
      * @param ny Number of pixels in y direction
      *
      */
-    explicit Medipix(bool timed = false, unsigned int nx=256, unsigned int ny=256);
+    explicit Medipix(bool timed = false, unsigned int nx = 256, unsigned int ny = 256);
 
     /**
      * Resets the current image
@@ -74,7 +74,7 @@ public:
 
     [[nodiscard]] unsigned int get_pixel_value(unsigned int i, unsigned int j) const;
 
-    [[maybe_unused]] bool get_shutter_open() const;
+    [[maybe_unused]] [[nodiscard]] bool get_shutter_open() const;
 
     /**
      * Getter for x dimension of the sensor in µm
@@ -94,7 +94,7 @@ public:
     /**
      * Getter for y dimension of the sensor in µm
      */
-    [[nodiscard]] float get_max_y() const ;
+    [[nodiscard]] float get_max_y() const;
 
     /**
      * Getter for the threshold zero
@@ -146,7 +146,7 @@ public:
      * Saves the current image to a raw file
      * @param filename
      */
-    void save_image(const std::string& filename);
+    void save_image(const std::string &filename);
 
     /**
      * Returns the total number of counts in the current image
@@ -186,7 +186,12 @@ public:
      * @param i pixel index in x direction
      * @param j pixel index in y direction
      */
-    void save_pixel_signals(const std::string& filename, unsigned int i, unsigned int j);
+    void save_pixel_signals(const std::string &filename, unsigned int i, unsigned int j);
+
+    /**
+    * Save fourier spectrum to file
+    */
+    void save_fourier_spectrum(const std::string &filename);
 
     /**
      * Returns true if the detector simulates pile-up events
@@ -198,7 +203,7 @@ public:
      * Calculates the fourier spectrum of the current image
      *
      */
-     std::vector<float> get_fourier_spectrum();
+    std::vector<float> get_fourier_spectrum();
 
 
     /**
@@ -234,7 +239,8 @@ protected:
      * @param pixel_center_y in µm
      * @return
      */
-    [[nodiscard]] float calculate_shared_energy( float x, float y, float energy, float pixel_center_x, float pixel_center_y) const;
+    [[nodiscard]] float
+    calculate_shared_energy(float x, float y, float energy, float pixel_center_x, float pixel_center_y) const;
 
     /**
      * Getter for pixel wise threshold (including threshold dispersion)
@@ -242,7 +248,7 @@ protected:
      * @param j pixel
      * @return threshold in keV
      */
-    [[nodiscard]] inline float get_th0(unsigned int i, unsigned int j) const{
+    [[nodiscard]] inline float get_th0(unsigned int i, unsigned int j) const {
         return th0 + th0_dispersion[i * n_pixel_y + j];
     }
 
