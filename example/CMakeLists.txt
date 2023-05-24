@@ -37,7 +37,7 @@ if (GNUPLOT_FOUND)
             BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/frequency_pattern_spm.raw ${CMAKE_CURRENT_BINARY_DIR}/frequency_pattern.png)
 
 
-    set(GNUPLOT_INPUT_DIR \"input_dir='${CMAKE_CURRENT_BINARY_DIR}'\")
+
     add_custom_target(plot_pixel_signal
             COMMAND ${CMAKE_CURRENT_BINARY_DIR}/pixel_signal
             COMMAND gnuplot -e ${GNUPLOT_INPUT_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/gnuplot/plot_pixel_signal.gp
